@@ -1,0 +1,24 @@
+# Dependências
+node_modules/
+package-lock.json
+
+# Variáveis de ambiente (segredos!)
+.env
+.env.local
+.env.production
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.tmp
+*.temp
