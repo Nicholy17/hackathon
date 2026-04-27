@@ -1,11 +1,19 @@
+import dotenv from 'dotenv';
 import User from '../models/User.js';
 import VolunteerProfile from '../models/VolunteerProfile.js';
 import jwt from 'jsonwebtoken';
 
+// Carrega as variáveis de ambiente do arquivo .env
+dotenv.config();
+
+// Função com fallback caso JWT_SECRET não exista
 const generateToken = (userId, userType) => {
+  // Usa a variável de ambiente ou uma chave padrão (apenas para desenvolvimento)
+  const secret = process.env.JWT_SECRET || 'Compatibilize2026@SuperSecretKey';
+  
   return jwt.sign(
     { id: userId, userType },
-    process.env.JWT_SECRET,
+    secret,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
 };
@@ -13,6 +21,11 @@ const generateToken = (userId, userType) => {
 export const register = async (req, res) => {
   try {
     const { email, password, nome, idade, localizacao, habilidades, disponibilidade } = req.body;
+
+    // Validação: idade é obrigatória
+    if (!idade) {
+      return res.status(400).json({ error: 'Idade é obrigatória' });
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -25,7 +38,7 @@ export const register = async (req, res) => {
     const profile = new VolunteerProfile({
       user: user._id,
       nome,
-      idade,
+      idade: parseInt(idade),
       localizacao: localizacao || {},
       habilidades: habilidades || [],
       disponibilidade: disponibilidade || {},
@@ -45,8 +58,8 @@ export const register = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao cadastrar voluntário' });
+    console.error('Erro no cadastro:', error);
+    res.status(500).json({ error: 'Erro ao cadastrar voluntário: ' + error.message });
   }
 };
 

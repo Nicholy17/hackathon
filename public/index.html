@@ -285,6 +285,10 @@
                         </div>
                     </div>
                     <div class="form-row">
+                        <label class="label">Idade</label>
+                        <input class="input" type="number" placeholder="18" id="reg-idade" min="16" max="120">
+                    </div>
+                    <div class="form-row">
                         <label class="label">Senha</label>
                         <input class="input" type="password" placeholder="Min. 6 caracteres" id="reg-senha">
                     </div>
@@ -875,7 +879,7 @@
     let currentToken = null;
 
     const skillsPool = ['Comunicacao','Lideranca','Trabalho em Equipe','Empatia','Resolucao de Conflitos','Mediacao','Primeiros Socorros','Logistica','Organizacao','Gestao de Recursos','Dirigir','Operacoes de Campo','Informatica Basica','Redes Sociais','Design Grafico','Fotografia','Ingles','Espanhol','Libras','Portugues','Ensinar','Aconselhamento','Acolhimento','Arrecadacao','Triagem de Donativos'];
-    const API_BASE_URL = '';
+    const API_BASE_URL = 'http://localhost:3000';
 
     function goTo(id) {
         document.querySelectorAll('#scr-login, .screen').forEach(s => {
@@ -944,8 +948,9 @@
         const sobrenome = document.getElementById('reg-sobrenome')?.value || 'Silva';
         const email = document.getElementById('reg-email')?.value || 'ana@email.com';
         const escolaridade = document.getElementById('reg-escolaridade')?.value || 'Graduacao';
+        const idade = document.getElementById('reg-idade')?.value || '25';
         const resumoDiv = document.getElementById('reg-resumo-dados');
-        if (resumoDiv) resumoDiv.innerHTML = `<p><b>Nome:</b> ${nome} ${sobrenome}</p><p><b>E-mail:</b> ${email}</p><p><b>Formacao:</b> ${escolaridade}</p><p><b>Habilidades:</b> ${selectedSkills.size} selecionadas</p>`;
+        if (resumoDiv) resumoDiv.innerHTML = `<p><b>Nome:</b> ${nome} ${sobrenome}</p><p><b>E-mail:</b> ${email}</p><p><b>Idade:</b> ${idade} anos</p><p><b>Formacao:</b> ${escolaridade}</p><p><b>Habilidades:</b> ${selectedSkills.size} selecionadas</p>`;
     }
 
 function showToast(msg, type) {
@@ -1045,46 +1050,105 @@ async function doLogin() {
     }
 }
 
-    async function finishReg() {
-        const nome = document.getElementById('reg-nome')?.value;
-        const sobrenome = document.getElementById('reg-sobrenome')?.value;
-        const email = document.getElementById('reg-email')?.value;
-        const senha = document.getElementById('reg-senha')?.value;
-        if (!nome || !sobrenome || !email || !senha) {
-            showToast('Preencha todos os campos obrigatorios', 'error');
-            return;
-        }
-        try {
-            const registerResponse = await fetch(`${API_BASE_URL}/api/auth/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email,
-                    password: senha,
-                    nome: `${nome} ${sobrenome}`,
-                    idade: 25,
-                    habilidades: Array.from(selectedSkills)
-                })
-            });
-            if (!registerResponse.ok) throw new Error('Erro no cadastro');
-            const loginResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password: senha, userType: 'volunteer' })
-            });
-            const loginData = await loginResponse.json();
-            if (!loginResponse.ok) throw new Error('Erro no login automatico');
-            currentToken = loginData.token;
-            currentUser = loginData.user;
-            localStorage.setItem('token', currentToken);
-            showToast('Cadastro e login realizados!', 'success');
-            goTo('scr-vol');
-            volTab('teste');
-        } catch (error) {
-            showToast(error.message, 'error');
-        }
+async function finishReg() {
+    const nome = document.getElementById('reg-nome')?.value;
+    const sobrenome = document.getElementById('reg-sobrenome')?.value;
+    const email = document.getElementById('reg-email')?.value;
+    const senha = document.getElementById('reg-senha')?.value;
+    const idade = document.getElementById('reg-idade')?.value;
+    
+    // Validação básica
+    if (!nome || !sobrenome || !email || !senha) {
+        showToast('Preencha todos os campos obrigatórios', 'error');
+        return;
     }
-
+    
+    if (!idade || idade < 16) {
+        showToast('Idade obrigatória (mínimo 16 anos)', 'error');
+        return;
+    }
+    
+    if (senha.length < 6) {
+        showToast('A senha deve ter no mínimo 6 caracteres', 'error');
+        return;
+    }
+    
+    const termsCheck = document.getElementById('terms-cb');
+    if (!termsCheck || !termsCheck.checked) {
+        showToast('Você precisa aceitar os termos de uso', 'error');
+        return;
+    }
+    
+    // Prepara os dados no formato que o backend espera
+    const registerData = {
+        email: email,
+        password: senha,
+        nome: `${nome} ${sobrenome}`,
+        idade: parseInt(idade),
+        habilidades: Array.from(selectedSkills),
+        localizacao: {
+            cidade: document.getElementById('reg-cidade')?.value || '',
+            estado: ''
+        },
+        telefone: document.getElementById('reg-tel')?.value || '',
+        formacao: {
+            nivel: document.getElementById('reg-escolaridade')?.value || '',
+            instituicao: document.getElementById('reg-instituicao')?.value || '',
+            curso: document.getElementById('reg-curso')?.value || ''
+        }
+    };
+    
+    console.log('📝 Enviando cadastro:', registerData);
+    
+    try {
+        const registerResponse = await fetch(`${API_BASE_URL}/api/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(registerData)
+        });
+        
+        const registerResult = await registerResponse.json();
+        
+        if (!registerResponse.ok) {
+            console.error('Erro no cadastro:', registerResult);
+            throw new Error(registerResult.error || 'Erro no cadastro');
+        }
+        
+        console.log('✅ Cadastro realizado:', registerResult);
+        showToast('Cadastro realizado com sucesso!', 'success');
+        
+        const loginResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password: senha, userType: 'volunteer' })
+        });
+        
+        const loginResult = await loginResponse.json();
+        
+        if (!loginResponse.ok) {
+            console.error('Erro no login:', loginResult);
+            throw new Error(loginResult.error || 'Erro no login automático');
+        }
+        
+        console.log('✅ Login realizado:', loginResult);
+        
+        currentToken = loginResult.token;
+        currentUser = loginResult.user;
+        localStorage.setItem('token', currentToken);
+        
+        showToast('Bem-vindo! Redirecionando...', 'success');
+        
+        setTimeout(() => {
+            goTo('scr-vol');
+            volTab('painel');
+            carregarDadosVoluntario();
+        }, 1500);
+        
+    } catch (error) {
+        console.error('❌ Erro:', error);
+        showToast(error.message, 'error');
+    }
+}
     function logout() {
         localStorage.removeItem('token');
         currentToken = null;
@@ -1279,16 +1343,16 @@ async function carregarVoluntarios() {
                                     <div style="font-size:0.7rem; color:#9aa0b0;">${v.user?.email || ''}</div>
                                 </div>
                             </div>
-                        </td>
-                        <td>${v.localizacao?.cidade || '-'}</td>
+                         </div>
+                        <td>${v.localizacao?.cidade || '-'}</div>
                         <td>
                             <div class="flex gap-1 flex-wrap">
                                 ${habilidadesMostrar.map(h => `<span class="chip" style="font-size:0.65rem;">${h}</span>`).join('')}
                                 ${temMais ? `<span class="chip" style="font-size:0.65rem;">+${habilidades.length - 2}</span>` : ''}
                             </div>
-                        </td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                        <td><strong>${v.testResult?.score || '-'}/100</strong></td>
+                         </div>
+                        <td><span class="badge ${statusClass}">${statusText}</span></div>
+                        <td><strong>${v.testResult?.score || '-'}/100</strong></div>
                         <td>
                             <div class="flex gap-1">
                                 <button class="btn btn-outline btn-sm" onclick="verDetalhesVoluntario('${voluntarioId}')">Ver</button>
@@ -1297,18 +1361,18 @@ async function carregarVoluntarios() {
                                 ${statusText !== 'Reprovado' ? 
                                     `<button class="btn btn-danger btn-sm" onclick="mudarStatusVoluntario('${voluntarioId}', 'rejected')">Reprovar</button>` : ''}
                             </div>
-                        </td>
-                    </tr>
+                         </div>
+                     </div>
                 `;
             }).join('');
         } else {
-            tb.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem;">Nenhum voluntario encontrado.</td></tr>';
+            tb.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem;">Nenhum voluntario encontrado. </div><\/tr>';
         }
     } catch (error) {
         console.error('❌ Erro ao carregar voluntários:', error);
         const tb = document.getElementById('cand-tb');
         if (tb) {
-            tb.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color: red;">Erro ao carregar voluntários</td></tr>';
+            tb.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color: red;">Erro ao carregar voluntários</div><\/tr>';
         }
     }
 }
@@ -1608,22 +1672,22 @@ async function verDetalhesVoluntario(volunteerId) {
                                                     <div class="av av-sm av-teal">${(voluntario.nome || 'V').substring(0,2).toUpperCase()}</div>
                                                     <span style="font-weight: 500;">${voluntario.nome || 'Não informado'}</span>
                                                 </div>
-                                            </td>
-                                            <td>${voluntario.user?.email || '-'}</td>
-                                            <td><strong>${score}/100</strong></td>
-                                            <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                             </div>
+                                            <td>${voluntario.user?.email || '-'}</div>
+                                            <td><strong>${score}/100</strong></div>
+                                            <td><span class="badge ${statusClass}">${statusText}</span></div>
                                             <td>
                                                 <div class="flex gap-1">
                                                     <button class="btn btn-outline btn-sm" onclick="verDetalhesVoluntario('${voluntario._id}'); closeModal('modal-candidatos');">Ver</button>
                                                     ${status !== 'approved' ? `<button class="btn btn-success btn-sm" onclick="mudarStatusVoluntarioProjeto('${voluntario._id}', '${projetoId}', 'approved')">Aprovar</button>` : ''}
                                                     ${status !== 'rejected' ? `<button class="btn btn-danger btn-sm" onclick="mudarStatusVoluntarioProjeto('${voluntario._id}', '${projetoId}', 'rejected')">Reprovar</button>` : ''}
                                                 </div>
-                                            </td>
-                                        </tr>
+                                             </div>
+                                         </div>
                                     `;
                                 }).join('')}
                             </tbody>
-                        </table>
+                         </div>
                     </div>
                 `;
             }
@@ -2041,28 +2105,56 @@ async function carregarProjetos() {
 }
 
     // TESTE
-    async function carregarPerguntas() {
-        if (!currentToken) {
+async function carregarPerguntas() {
+    // Verifica se tem token
+    if (!currentToken) {
+        console.log('❌ Sem token, redirecionando para login...');
+        showToast('Faça login primeiro', 'error');
+        goTo('scr-login');
+        return;
+    }
+    
+    console.log('🔐 Token atual:', currentToken);
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/test/questions`, {
+            headers: { 
+                'Authorization': `Bearer ${currentToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        console.log('📡 Resposta da API:', response.status);
+        
+        if (response.status === 401) {
+            // Token expirado ou inválido
+            showToast('Sessão expirada. Faça login novamente.', 'error');
+            localStorage.removeItem('token');
+            currentToken = null;
             goTo('scr-login');
             return;
         }
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/test/questions`, {
-                headers: { 'Authorization': `Bearer ${currentToken}` }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                perguntasTeste = data;
-                respostasTeste = {};
-                quizCur = 0;
-                document.getElementById('test-loading').style.display = 'none';
-                document.getElementById('test-container').style.display = 'block';
-                renderQuiz();
-            } else showToast('Erro ao carregar perguntas', 'error');
-        } catch (error) {
-            showToast('Erro ao carregar perguntas', 'error');
+        
+        if (!response.ok) {
+            throw new Error(`Erro ${response.status}: ${response.statusText}`);
         }
+        
+        const data = await response.json();
+        console.log('📝 Perguntas carregadas:', data.length);
+        
+        perguntasTeste = data;
+        respostasTeste = {};
+        quizCur = 0;
+        document.getElementById('test-loading').style.display = 'none';
+        document.getElementById('test-container').style.display = 'block';
+        renderQuiz();
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar perguntas:', error);
+        showToast('Erro ao carregar perguntas: ' + error.message, 'error');
+        document.getElementById('test-loading').innerHTML = '<p class="text-muted">Erro ao carregar perguntas. Tente novamente mais tarde.</p>';
     }
+}
 // Abrir modal com detalhes do projeto
 async function verDetalhesProjeto(projetoId) {
     if (!currentToken) return;
