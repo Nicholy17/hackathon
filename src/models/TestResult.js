@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const testResultSchema = new mongoose.Schema({
   volunteer: {
     type: mongoose.Schema.Types.ObjectId,
@@ -45,15 +44,5 @@ const testResultSchema = new mongoose.Schema({
 }, {
   timestamps: true  // Isso substitui o pre-save manual
 });
-
-// Se quiser manter o pre-save, use esta versão:
-// testResultSchema.pre('save', function(next) {
-//   try {
-//     this.updatedAt = Date.now();
-//     next();
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 export default mongoose.model('TestResult', testResultSchema);
