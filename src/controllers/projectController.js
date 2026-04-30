@@ -205,7 +205,7 @@ export const candidatarProjeto = async (req, res) => {
 
     await projeto.save();
     
-    console.log('✅ Candidatura realizada com sucesso! Status: pending');
+    console.log('Candidatura realizada com sucesso! Status: pending');
 
     res.json({
       message: 'Candidatura realizada com sucesso! Aguarde a aprovação do administrador.',
@@ -217,7 +217,7 @@ export const candidatarProjeto = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('❌ Erro ao candidatar-se:', error);
+    console.error('Erro ao candidatar-se:', error);
     res.status(500).json({ error: 'Erro ao candidatar-se', detalhe: error.message });
   }
 };
@@ -275,7 +275,7 @@ export const meusProjetos = async (req, res) => {
     
     res.json(meusProjetosFormatados);
   } catch (error) {
-    console.error('❌ Erro ao buscar seus projetos:', error);
+    console.error('Erro ao buscar seus projetos:', error);
     res.status(500).json({ error: 'Erro ao buscar seus projetos', detalhe: error.message });
   }
 };

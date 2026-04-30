@@ -170,8 +170,7 @@ export const getAllVolunteers = async (req, res) => {
 };
 
 // Detalhes do voluntário
-// Detalhes do voluntário (corrigido)
-// Detalhes do voluntário
+
 export const getVolunteerDetails = async (req, res) => {
   try {
     const { id } = req.params;
@@ -236,4 +235,24 @@ export const updateVolunteerStatus = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Erro ao atualizar status' });
   }
+};
+
+export const finalizarProjeto = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const projeto = await Project.findByIdAndUpdate(
+            id,
+            { status: 'fechado', updatedAt: Date.now() },
+            { new: true }
+        );
+        
+        if (!projeto) {
+            return res.status(404).json({ error: 'Projeto não encontrado' });
+        }
+        
+        res.json({ message: 'Projeto encerrado com sucesso', projeto });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };

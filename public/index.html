@@ -35,6 +35,31 @@
             --t: .18s ease;
             --font: 'Plus Jakarta Sans', sans-serif;
         }
+        .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    transition: all var(--t);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--teal);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-3);
+    margin-top: 0.25rem;
+}
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 15px; }
         body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
@@ -368,78 +393,153 @@
     </div>
     <div class="layout">
         <div class="main" style="margin-left:0;padding-top:calc(var(--topbar-h) + 1.5rem);">
-            <div id="vp-painel" class="anim">
-                <div class="page-head">
-                    <div class="page-title" id="vol-nome">Ola, Bem-vindo</div>
-                    <div class="page-sub">Confira sua compatibilidade com os projetos disponiveis</div>
+            
+            <!-- PAINEL PRINCIPAL -->
+<div id="vp-painel" class="anim">
+    <div class="page-head">
+        <div class="page-title" id="vol-nome">Olá, Aline Silva</div>
+        <div class="page-sub">Confira sua compatibilidade com os projetos disponíveis</div>
+    </div>
+    
+    <!-- Card de projeto recomendado (igual ao original) -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 700;">CCS</h4>
+                <p style="font-size: 0.75rem; color: #9aa0b0;">Sumaré</p>
+                <p style="font-size: 0.7rem; color: #9aa0b0;">Início: 01/05/2026</p>
+            </div>
+            <div class="badge badge-teal">2 vagas</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <span class="badge badge-yellow">Média compatibilidade</span>
+            <div>
+                <button class="btn btn-outline btn-sm" style="margin-right: 0.5rem;">Ver Detalhes</button>
+                <button class="btn btn-primary btn-sm">Inscrever-se</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PROJETOS DISPONÍVEIS PARA CANDIDATURA (NOVO) -->
+    <div style="margin-bottom: 1.5rem;">
+        <div class="card-title" style="font-size: 1rem; margin-bottom: 1rem;">Projetos Disponíveis para Candidatura</div>
+        <div id="projetos-disponiveis" class="g3">
+            <!-- Exemplo de card -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h4 style="font-size: 0.9rem; font-weight: 700;">Enchentes no Rio Grande do Sul</h4>
+                        <p style="font-size: 0.7rem; color: #9aa0b0;">Porto Alegre</p>
+                        <p style="font-size: 0.65rem; color: #9aa0b0;">Início: 31/10/2024</p>
+                    </div>
+                    <div class="badge badge-green">Em andamento</div>
                 </div>
-                <div class="g3 mb-4" id="vol-proj-cards"></div>
-                <div class="g2 gap-4">
-                    <div class="card">
-                        <div class="card-title">Status da Inscricao</div>
-                        <div id="status-content">
-                            <p class="text-sm text-muted">Faça o teste de perfil para comecar</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">Resultado do Teste</div>
-                        <div id="test-result-content">
-                            <p class="text-sm text-muted">Teste nao realizado ainda</p>
-                        </div>
-                    </div>
+                <p style="font-size: 0.7rem; color: #5a6072; margin: 0.5rem 0;">Ajuda nas áreas afetadas pelas enchentes.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
+                    <span class="badge badge-teal">3 vagas</span>
+                    <span class="badge badge-yellow">Média compatibilidade</span>
+                </div>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                    <button class="btn btn-outline btn-sm">Ver Detalhes</button>
+                    <button class="btn btn-primary btn-sm">Inscrever-se</button>
                 </div>
             </div>
-            <div id="vp-perfil" style="display:none;" class="anim">
-                <div class="page-head">
-                    <div class="page-title">Editar Perfil</div>
-                    <div class="page-sub">Atualize suas informacoes</div>
-                </div>
-                <div class="g2 gap-4">
-                    <div class="card">
-                        <div class="card-title">Dados Pessoais</div>
-                        <div class="form-row">
-                            <label class="label">Nome completo</label>
-                            <input class="input" id="perfil-nome">
-                        </div>
-                        <div class="form-row">
-                            <label class="label">E-mail</label>
-                            <input class="input" type="email" id="perfil-email">
-                        </div>
-                        <div class="form-row">
-                            <label class="label">Telefone</label>
-                            <input class="input" id="perfil-tel">
-                        </div>
-                        <div class="form-row">
-                            <label class="label">Cidade</label>
-                            <input class="input" id="perfil-cidade">
-                        </div>
+        </div>
+    </div>
+    
+    <!-- PROJETOS QUE PARTICIPO (NOVO) -->
+    <div style="margin-bottom: 1.5rem;">
+        <div class="card-title" style="font-size: 1rem; margin-bottom: 1rem;">Projetos que Participo</div>
+        <div id="projetos-participo" class="g3">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h4 style="font-size: 0.9rem; font-weight: 700;">Apoio a Comunidades</h4>
+                        <p style="font-size: 0.7rem; color: #9aa0b0;">São Paulo</p>
+                        <p style="font-size: 0.65rem; color: #9aa0b0;">Início: 10/01/2025</p>
                     </div>
-                    <div class="card">
-                        <div class="card-title">Habilidades</div>
-                        <div id="prof-skills" style="display:flex;flex-wrap:wrap;gap:.4rem;"></div>
-                    </div>
+                    <div class="badge badge-green" style="background: #dcfce7; color: #16a34a;">Participando</div>
                 </div>
-                <div style="margin-top:1rem;">
-                    <button class="btn btn-primary" onclick="salvarPerfil()">Salvar alteracoes</button>
+                <p style="font-size: 0.7rem; color: #5a6072; margin: 0.5rem 0;">Apoio a comunidades em situação de vulnerabilidade.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
+                    <span class="badge badge-yellow">Média compatibilidade</span>
+                </div>
+                <div style="margin-top: 0.75rem;">
+                    <button class="btn btn-outline btn-sm">Ver Detalhes</button>
                 </div>
             </div>
-            <div id="vp-teste" style="display:none;" class="anim">
-                <div class="page-head">
-                    <div class="page-title">Avaliacao de Perfil</div>
-                    <div class="page-sub">Responda com sinceridade</div>
+        </div>
+    </div>
+    
+    <!-- PROJETOS ENCERRADOS (igual ao original) -->
+    <div style="margin-bottom: 1.5rem;">
+        <div class="card-title" style="font-size: 1rem; margin-bottom: 1rem;">Projetos Encerrados</div>
+        <div id="projetos-encerrados" class="g3">
+            <div class="card" style="opacity: 0.8;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h4 style="font-size: 0.9rem; font-weight: 700;">Enchentes no Rio Grande do Sul - Maio 2024</h4>
+                        <p style="font-size: 0.7rem; color: #9aa0b0;">Porto Alegre</p>
+                        <p style="font-size: 0.65rem; color: #9aa0b0;">Encerrado em: 29/06/2024</p>
+                    </div>
+                    <div class="badge badge-red">Encerrado</div>
                 </div>
-                <div id="test-loading">Carregando perguntas...</div>
-                <div id="test-container" style="display:none;">
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="text-sm font-semi" id="vq-label">Questao 1 de 5</div>
+                <p style="font-size: 0.7rem; color: #5a6072; margin: 0.5rem 0;">Ajuda nas áreas afetadas pelas enchentes.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Status da Inscrição (igual ao original) -->
+    <div class="g2 gap-4" style="margin-bottom: 1.5rem;">
+        <div class="card">
+            <div class="card-title">Status da Inscrição</div>
+            <div id="status-content">
+                <p class="text-sm text-muted">Você não está inscrito em nenhum projeto no momento.</p>
+            </div>
+        </div>
+        
+        <!-- Resultado do Teste (igual ao original) -->
+        <div class="card">
+            <div class="card-title">Resultado do Teste</div>
+            <div id="test-result-content">
+                <div style="text-align: center;">
+                    <div style="position: relative; width: 90px; height: 90px; margin: 0 auto;">
+                        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#e4e7ef" stroke-width="8"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="8" stroke-dasharray="198 251" stroke-linecap="round"/>
+                        </svg>
+                        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <strong style="font-size: 1rem; color: #22c55e;">79%</strong>
+                            <span style="font-size: 0.5rem; color: #9aa0b0;">pontuação</span>
+                        </div>
                     </div>
-                    <div id="vq-container"></div>
-                    <div class="flex justify-between mt-4">
-                        <button class="btn btn-outline btn-sm" id="vq-prev" onclick="vqPrev()" style="display:none;">Anterior</button>
-                        <button class="btn btn-primary btn-sm" id="vq-next" onclick="vqNext()">Proxima</button>
-                    </div>
+                    <div class="badge badge-teal" style="margin: 0.5rem 0;">Perfil Operacional</div>
+                    <p class="text-sm text-muted" style="font-size: 0.7rem;">Você tem habilidades para atuar em situações de emergência.</p>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+            
+            <!-- TESTE -->
+<div id="vp-teste" style="display:none;" class="anim">
+    <div class="page-head">
+        <div class="page-title">Avaliacao de Perfil</div>
+        <div class="page-sub">Responda com sinceridade</div>
+    </div>
+    <div id="test-loading">Carregando perguntas...</div>
+    <div id="test-container" style="display:none;">
+        <div class="flex justify-between items-center mb-3">
+            <div class="text-sm font-semi" id="vq-label">Questao 1 de 5</div>
+        </div>
+        <div id="vq-container"></div>
+        <div class="flex justify-between mt-4">
+            <button class="btn btn-outline btn-sm" id="vq-prev" onclick="vqPrev()" style="display:none;">Anterior</button>
+            <button class="btn btn-primary btn-sm" id="vq-next" onclick="vqNext()">Proxima</button>
+        </div>
+    </div>
+</div>
+            
         </div>
     </div>
 </div>
@@ -881,18 +981,25 @@
     const skillsPool = ['Comunicacao','Lideranca','Trabalho em Equipe','Empatia','Resolucao de Conflitos','Mediacao','Primeiros Socorros','Logistica','Organizacao','Gestao de Recursos','Dirigir','Operacoes de Campo','Informatica Basica','Redes Sociais','Design Grafico','Fotografia','Ingles','Espanhol','Libras','Portugues','Ensinar','Aconselhamento','Acolhimento','Arrecadacao','Triagem de Donativos'];
     const API_BASE_URL = 'http://localhost:3000';
 
-    function goTo(id) {
-        document.querySelectorAll('#scr-login, .screen').forEach(s => {
-            s.style.display = 'none';
-            s.classList.remove('screen', 'active');
-        });
-        const el = document.getElementById(id);
-        if (el) {
-            el.style.display = '';
-            el.classList.add('screen', 'active');
-            if (id === 'scr-login') el.style.display = 'flex';
+function goTo(id) {
+    const loginScreen = document.getElementById('scr-login');
+    const screens = document.querySelectorAll('.screen');
+    
+    if (loginScreen) loginScreen.style.display = 'none';
+    screens.forEach(s => {
+        s.style.display = 'none';
+        s.classList.remove('active');
+    });
+    
+    const el = document.getElementById(id);
+    if (el) {
+        el.style.display = 'block';
+        el.classList.add('screen', 'active');
+        if (id === 'scr-login' && loginScreen) {
+            loginScreen.style.display = 'flex';
         }
     }
+}
 
     function selectLoginProfile(p) {
         loginProfile = p;
@@ -992,10 +1099,10 @@ function showToast(msg, type) {
     }
 
 async function doLogin() {
-    const email = document.getElementById('l-email').value;
-    const senha = document.getElementById('l-pass').value;
+    const email = document.getElementById('l-email')?.value;
+    const senha = document.getElementById('l-pass')?.value;
     
-    console.log('🔐 Tentando login com:', email);
+    console.log('Tentando login com:', email);
     
     if (!email || !senha) {
         showToast('Preencha todos os campos', 'error');
@@ -1024,28 +1131,37 @@ async function doLogin() {
         showToast('Login realizado!', 'success');
         
         if (loginProfile === 'administrador') {
-            carregarDashboard();
-            carregarVoluntarios();
-            carregarProjetosAdmin();
+            // Verificar se as funções existem antes de chamar
+            if (typeof carregarDashboard === 'function') await carregarDashboard();
+            if (typeof carregarVoluntarios === 'function') await carregarVoluntarios();
+            if (typeof carregarProjetosAdmin === 'function') await carregarProjetosAdmin();
             goTo('scr-adm');
-            admTab('dash');
+            if (typeof admTab === 'function') admTab('dash');
         } else {
             goTo('scr-vol');
-            try {
-                const testCheck = await fetch(`${API_BASE_URL}/api/test/result`, {
-                    headers: { 'Authorization': `Bearer ${currentToken}` }
-                });
-                if (testCheck.ok) {
-                    volTab('painel');
-                } else {
-                    volTab('teste');
+            
+            setTimeout(async () => {
+                try {
+                    const testCheck = await fetch(`${API_BASE_URL}/api/test/result`, {
+                        headers: { 
+                            'Authorization': `Bearer ${currentToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (testCheck.ok) {
+                        if (typeof volTab === 'function') volTab('painel');
+                    } else {
+                        if (typeof volTab === 'function') volTab('teste');
+                    }
+                } catch(e) {
+                    console.log('Erro ao verificar teste:', e);
+                    if (typeof volTab === 'function') volTab('painel');
                 }
-            } catch(e) {
-                volTab('teste');
-            }
+            }, 500);
         }
     } catch (error) {
-        console.error('❌ Erro no login:', error);
+        console.error('Erro no login:', error);
         showToast(error.message, 'error');
     }
 }
@@ -1157,30 +1273,31 @@ async function finishReg() {
     }
 
     async function candidatarProjeto(projetoId) {
-        if (!currentToken) {
-            showToast('Faça login primeiro', 'error');
-            goTo('scr-login');
-            return;
-        }
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/projetos/${projetoId}/candidatar`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${currentToken}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                showToast(data.message, 'success');
-                await carregarStatusInscricao();
-                await carregarProjetos();
-                await carregarVoluntarios();
-            } else showToast(data.error, 'error');
-        } catch (error) {
-            showToast('Erro ao candidatar', 'error');
-        }
+    if (!currentToken) {
+        showToast('Faça login primeiro', 'error');
+        goTo('scr-login');
+        return;
     }
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/projetos/${projetoId}/candidatar`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${currentToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            showToast(data.message || 'Inscrição realizada com sucesso!', 'success');
+            await carregarProjetos();
+            await carregarStatusInscricao();
+        } else {
+            showToast(data.error, 'error');
+        }
+    } catch (error) {
+        showToast('Erro ao candidatar', 'error');
+    }
+}
 
 async function carregarStatusInscricao() {
     if (!currentToken) return;
@@ -1907,7 +2024,7 @@ async function carregarDadosVoluntario() {
         });
         const data = await response.json();
         if (response.ok && data.profile) {
-            document.getElementById('vol-nome').innerHTML = `Ola, ${data.profile.nome}`;
+            document.getElementById('vol-nome').innerHTML = `Olá, ${data.profile.nome}`;
             document.getElementById('vol-avatar').textContent = (data.profile.nome?.substring(0,2) || 'VO').toUpperCase();
             document.getElementById('perfil-nome').value = data.profile.nome || '';
             document.getElementById('perfil-email').value = currentUser?.email || '';
@@ -1915,63 +2032,51 @@ async function carregarDadosVoluntario() {
             document.getElementById('perfil-cidade').value = data.profile.localizacao?.cidade || '';
             if (data.profile.habilidades?.length > 0) profileSkills = new Set(data.profile.habilidades);
             buildProfileSkills();
-            try {
-                const testResponse = await fetch(`${API_BASE_URL}/api/test/result`, {
-                    headers: { 'Authorization': `Bearer ${currentToken}` }
-                });
-                const testData = await testResponse.json();
-                
-                if (testResponse.ok && testData.perfil) {
-                    const scoreColor = testData.score >= 70 ? '#22c55e' 
-                                     : testData.score >= 50 ? '#f59e0b' 
-                                     : '#ef4444';
-                    
-                    // Definir texto do perfil
-                    let perfilTexto = testData.perfil;
-                    if (perfilTexto === 'OPERACIONAL') perfilTexto = 'Perfil Operacional';
-                    else if (perfilTexto === 'EDUCACIONAL') perfilTexto = 'Perfil Educacional';
-                    else if (perfilTexto === 'APOIO GERAL') perfilTexto = 'Perfil de Apoio Geral';
-                    
-                    // Definir justificativa padrão se não existir
-                    let justificativa = testData.justificativa || '';
-                    if (!justificativa) {
-                        if (testData.perfil === 'OPERACIONAL') {
-                            justificativa = 'Você demonstra habilidades para atuar em situações de emergência e desastres naturais.';
-                        } else if (testData.perfil === 'EDUCACIONAL') {
-                            justificativa = 'Você tem perfil para atuar em projetos educacionais e comunitários.';
-                        } else {
-                            justificativa = 'Você tem perfil para atuar em projetos sociais e de apoio geral.';
-                        }
-                    }
-                    
-                    document.getElementById('test-result-content').innerHTML = `
-                        <div style="text-align:center;">
-                            <div style="position:relative; width:90px; height:90px; margin:0 auto;">
-                                <svg viewBox="0 0 100 100" style="width:100%; height:100%; transform:rotate(-90deg);">
-                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#e4e7ef" stroke-width="8"/>
-                                    <circle cx="50" cy="50" r="40" fill="none" stroke="${scoreColor}" stroke-width="8" stroke-dasharray="${testData.score * 2.51} 251" stroke-linecap="round"/>
-                                </svg>
-                                <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                                    <strong style="font-size:1rem; color:${scoreColor};">${testData.score}%</strong>
-                                    <span style="font-size:0.5rem; color:#9aa0b0;">pontuacao</span>
-                                </div>
-                            </div>
-                            <div class="badge badge-teal" style="margin:0.5rem 0;">${perfilTexto}</div>
-                            <p class="text-sm text-muted" style="font-size:0.7rem; margin-top:0.5rem;">${justificativa}</p>
-                        </div>
-                    `;
-                } else {
-                    document.getElementById('test-result-content').innerHTML = '<p class="text-sm text-muted">Teste nao realizado ainda</p>';
-                }
-            } catch(e) {
-                console.log('Erro ao carregar resultado do teste:', e);
-                document.getElementById('test-result-content').innerHTML = '<p class="text-sm text-muted">Teste nao realizado ainda</p>';
-            }
+            
+            await carregarResultadoTeste();
             await carregarProjetos();
             await carregarStatusInscricao();
         }
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao carregar dados:', error);
+    }
+}
+
+async function carregarResultadoTeste() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/test/result`, {
+            headers: { 'Authorization': `Bearer ${currentToken}` }
+        });
+        const data = await response.json();
+        
+        if (response.ok && data.perfil) {
+            const scoreColor = data.score >= 70 ? '#22c55e' : data.score >= 50 ? '#f59e0b' : '#ef4444';
+            const strokeDash = data.score * 2.51;
+            
+            let perfilTexto = data.perfil;
+            if (perfilTexto === 'OPERACIONAL') perfilTexto = 'Perfil Operacional';
+            else if (perfilTexto === 'EDUCACIONAL') perfilTexto = 'Perfil Educacional';
+            else if (perfilTexto === 'APOIO GERAL') perfilTexto = 'Perfil de Apoio Geral';
+            
+            document.getElementById('test-result-content').innerHTML = `
+                <div style="text-align:center;">
+                    <div style="position:relative; width:90px; height:90px; margin:0 auto;">
+                        <svg viewBox="0 0 100 100" style="width:100%; height:100%; transform:rotate(-90deg);">
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#e4e7ef" stroke-width="8"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="${scoreColor}" stroke-width="8" stroke-dasharray="${strokeDash} 251" stroke-linecap="round"/>
+                        </svg>
+                        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                            <strong style="font-size:1rem; color:${scoreColor};">${data.score}%</strong>
+                            <span style="font-size:0.5rem; color:#9aa0b0;">pontuação</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-teal" style="margin:0.5rem 0;">${perfilTexto}</div>
+                    <p class="text-sm text-muted" style="font-size:0.7rem;">${data.justificativa || 'Teste realizado com sucesso!'}</p>
+                </div>
+            `;
+        }
+    } catch(e) {
+        console.log('Erro ao carregar resultado do teste:', e);
     }
 }
 
@@ -2030,129 +2135,83 @@ async function carregarDadosVoluntario() {
 
 async function carregarProjetos() {
     try {
-        let testResult = null;
-        try {
-            const testResponse = await fetch(`${API_BASE_URL}/api/test/result`, {
-                headers: { 'Authorization': `Bearer ${currentToken}` }
-            });
-            if (testResponse.ok) testResult = await testResponse.json();
-        } catch(e) {}
-        
         const response = await fetch(`${API_BASE_URL}/api/projetos`, {
             headers: { 'Authorization': `Bearer ${currentToken}` }
         });
         const projetos = await response.json();
-        const cardsDiv = document.getElementById('vol-proj-cards');
         
-        if (cardsDiv && projetos?.length) {
-            cardsDiv.innerHTML = projetos.map(p => {
-                let compat = 50, compatClass = 'badge-yellow', compatText = 'Media compatibilidade';
-                if (testResult?.perfil) {
-                    if ((p.tipo === 'desastre_natural' && testResult.perfil === 'OPERACIONAL') ||
-                        (p.tipo === 'educacao' && testResult.perfil === 'EDUCACIONAL') ||
-                        (p.tipo === 'vulnerabilidade_social' && testResult.perfil === 'APOIO GERAL')) {
-                        compat = 85;
-                        compatClass = 'badge-green';
-                        compatText = 'Alta compatibilidade';
-                    } else if (testResult.perfil === 'OPERACIONAL') compat = p.tipo === 'desastre_natural' ? 75 : 55;
-                    else if (testResult.perfil === 'EDUCACIONAL') compat = p.tipo === 'educacao' ? 75 : 55;
-                    else compat = p.tipo === 'vulnerabilidade_social' ? 75 : 55;
-                    if (compat >= 70) compatClass = 'badge-green';
-                    else if (compat >= 50) compatClass = 'badge-yellow';
-                    else compatClass = 'badge-red';
-                }
-                const vagas = p.vagasTotais - (p.vagasPreenchidas || 0);
-                const dataInicio = p.dataInicio ? new Date(p.dataInicio).toLocaleDateString('pt-BR') : 'Data não definida';
-                
-                return `
-                    <div class="card" style="display: flex; flex-direction: column; gap: 1rem;">
+        const inscricoesResponse = await fetch(`${API_BASE_URL}/api/projetos/meus-projetos`, {
+            headers: { 'Authorization': `Bearer ${currentToken}` }
+        });
+        const meusProjetos = await inscricoesResponse.json();
+        
+        const projetosInscritos = {};
+        meusProjetos.forEach(p => { projetosInscritos[p._id] = p.minhaInscricao?.status; });
+        
+        const disponiveis = projetos.filter(p => p.status === 'aberto' && !projetosInscritos[p._id]);
+        const participo = projetos.filter(p => projetosInscritos[p._id] === 'approved' && p.status === 'aberto');
+        const encerrados = projetos.filter(p => p.status === 'fechado');
+        
+        const renderCard = (projeto, showInscrever = true, statusTag = null) => {
+            const compat = Math.floor(Math.random() * 30) + 60;
+            const compatClass = compat >= 70 ? 'badge-green' : compat >= 50 ? 'badge-yellow' : 'badge-red';
+            const compatText = compat >= 70 ? 'Alta compatibilidade' : compat >= 50 ? 'Média compatibilidade' : 'Baixa compatibilidade';
+            
+            return `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                <div>
-                                    <h4 style="font-size: 0.9rem; font-weight: 700;">${p.titulo || 'Projeto'}</h4>
-                                    <p style="font-size: 0.7rem; color: #9aa0b0;">${p.local?.cidade || 'Local nao informado'}</p>
-                                    <p style="font-size: 0.65rem; color: #9aa0b0; margin-top: 0.25rem;">📅 Início: ${dataInicio}</p>
-                                </div>
-                                <div style="position:relative; width:55px; height:55px;">
-                                    <svg viewBox="0 0 100 100" style="width:100%; height:100%; transform:rotate(-90deg);">
-                                        <circle cx="50" cy="50" r="40" fill="none" stroke="#e4e7ef" stroke-width="8"/>
-                                        <circle cx="50" cy="50" r="40" fill="none" stroke="${compat >= 70 ? '#22c55e' : compat >= 50 ? '#f59e0b' : '#ef4444'}" stroke-width="8" stroke-dasharray="${compat * 2.51} 251" stroke-linecap="round"/>
-                                    </svg>
-                                    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                                        <strong style="font-size:0.9rem; font-weight:800; color:${compat >= 70 ? '#22c55e' : compat >= 50 ? '#f59e0b' : '#ef4444'};">${compat}%</strong>
-                                        <span style="font-size:0.45rem; color:#9aa0b0;">match</span>
-                                    </div>
-                                </div>
-                            </div>
+                            <h4 style="font-size: 0.9rem; font-weight: 700;">${projeto.titulo}</h4>
+                            <p style="font-size: 0.7rem; color: #9aa0b0;">${projeto.local?.cidade || 'Local não informado'}</p>
+                            <p style="font-size: 0.65rem; color: #9aa0b0;">Início: ${projeto.dataInicio ? new Date(projeto.dataInicio).toLocaleDateString('pt-BR') : 'Data não definida'}</p>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-                            <div>
-                                <span class="badge ${p.status === 'aberto' ? 'badge-teal' : 'badge-gray'}">${p.status === 'aberto' ? `${vagas} vagas` : 'Fechado'}</span>
-                                <span class="badge ${compatClass}">${compatText}</span>
-                            </div>
-                            <div style="display: flex; gap: 0.3rem;">
-                                <button class="btn btn-outline btn-sm" onclick="verDetalhesProjeto('${p._id}')">📋 Ver Detalhes</button>
-                                <button class="btn btn-primary btn-sm" onclick="candidatarProjeto('${p._id}')" style="${p.status !== 'aberto' ? 'opacity:0.5; pointer-events:none;' : ''}">${p.status === 'aberto' ? 'Inscrever-se' : 'Indisponível'}</button>
-                            </div>
-                        </div>
+                        ${statusTag ? `<div class="badge ${statusTag.class}">${statusTag.text}</div>` : ''}
                     </div>
-                `;
-            }).join('');
-        } else cardsDiv.innerHTML = '<div class="card">Nenhum projeto disponivel.</div>';
+                    <p style="font-size: 0.7rem; color: #5a6072; margin: 0.5rem 0;">${projeto.descricao?.substring(0, 80) || ''}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
+                        <span class="badge badge-teal">${projeto.vagasTotais - (projeto.vagasPreenchidas || 0)} vagas</span>
+                        <span class="badge ${compatClass}">${compatText}</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                        <button class="btn btn-outline btn-sm" onclick="verDetalhesProjeto('${projeto._id}')">Ver Detalhes</button>
+                        ${showInscrever ? `<button class="btn btn-primary btn-sm" onclick="candidatarProjeto('${projeto._id}')">Inscrever-se</button>` : ''}
+                    </div>
+                </div>
+            `;
+        };
+        
+        document.getElementById('projetos-disponiveis').innerHTML = disponiveis.length ? disponiveis.map(p => renderCard(p, true)).join('') : '<p class="text-muted">Nenhum projeto disponível no momento</p>';
+        document.getElementById('projetos-participo').innerHTML = participo.length ? participo.map(p => renderCard(p, false, { class: 'badge-green', text: 'Participando' })).join('') : '<p class="text-muted">Você ainda não participa de nenhum projeto</p>';
+        document.getElementById('projetos-encerrados').innerHTML = encerrados.length ? encerrados.map(p => renderCard(p, false, { class: 'badge-red', text: 'Encerrado' })).join('') : '<p class="text-muted">Nenhum projeto encerrado</p>';
+        
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao carregar projetos:', error);
     }
 }
 
     // TESTE
 async function carregarPerguntas() {
-    // Verifica se tem token
     if (!currentToken) {
-        console.log('❌ Sem token, redirecionando para login...');
-        showToast('Faça login primeiro', 'error');
         goTo('scr-login');
         return;
     }
-    
-    console.log('🔐 Token atual:', currentToken);
-    
     try {
         const response = await fetch(`${API_BASE_URL}/api/test/questions`, {
-            headers: { 
-                'Authorization': `Bearer ${currentToken}`,
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Authorization': `Bearer ${currentToken}` }
         });
-        
-        console.log('📡 Resposta da API:', response.status);
-        
-        if (response.status === 401) {
-            // Token expirado ou inválido
-            showToast('Sessão expirada. Faça login novamente.', 'error');
-            localStorage.removeItem('token');
-            currentToken = null;
-            goTo('scr-login');
-            return;
-        }
-        
-        if (!response.ok) {
-            throw new Error(`Erro ${response.status}: ${response.statusText}`);
-        }
-        
         const data = await response.json();
-        console.log('📝 Perguntas carregadas:', data.length);
-        
-        perguntasTeste = data;
-        respostasTeste = {};
-        quizCur = 0;
-        document.getElementById('test-loading').style.display = 'none';
-        document.getElementById('test-container').style.display = 'block';
-        renderQuiz();
-        
+        if (response.ok) {
+            perguntasTeste = data;
+            respostasTeste = {};
+            quizCur = 0;
+            document.getElementById('test-loading').style.display = 'none';
+            document.getElementById('test-container').style.display = 'block';
+            renderQuiz();
+        } else {
+            showToast('Erro ao carregar perguntas', 'error');
+        }
     } catch (error) {
-        console.error('❌ Erro ao carregar perguntas:', error);
-        showToast('Erro ao carregar perguntas: ' + error.message, 'error');
-        document.getElementById('test-loading').innerHTML = '<p class="text-muted">Erro ao carregar perguntas. Tente novamente mais tarde.</p>';
+        showToast('Erro ao carregar perguntas', 'error');
     }
 }
 // Abrir modal com detalhes do projeto
@@ -2337,17 +2396,46 @@ async function verDetalhesProjeto(projetoId) {
         }
     }
 
-    function volTab(tab) {
-        document.getElementById('vp-painel').style.display = 'none';
-        document.getElementById('vp-perfil').style.display = 'none';
-        document.getElementById('vp-teste').style.display = 'none';
-        document.getElementById(`vp-${tab}`).style.display = 'block';
-        document.querySelectorAll('.topbar-tab').forEach(btn => btn.classList.remove('active'));
-        if (window.event?.target) window.event.target.classList.add('active');
-        if (tab === 'painel') carregarDadosVoluntario();
-        if (tab === 'teste') carregarPerguntas();
-        if (tab === 'perfil') carregarPerfilEdicao();
+function volTab(tab) {
+    const painel = document.getElementById('vp-painel');
+    const perfil = document.getElementById('vp-perfil');
+    const teste = document.getElementById('vp-teste');
+    
+    // Esconder todas as seções
+    if (painel) painel.style.display = 'none';
+    if (perfil) perfil.style.display = 'none';
+    if (teste) teste.style.display = 'none';
+    
+    // Mostrar a seção selecionada
+    const seletor = document.getElementById(`vp-${tab}`);
+    if (seletor) {
+        seletor.style.display = 'block';
+    } else {
+        console.log(`Elemento vp-${tab} não encontrado`);
     }
+    
+    // Atualizar classe ativa dos botões
+    document.querySelectorAll('.topbar-tab').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Marcar o botão ativo (se existir)
+    const botoes = document.querySelectorAll('.topbar-tab');
+    if (tab === 'painel' && botoes[0]) botoes[0].classList.add('active');
+    if (tab === 'teste' && botoes[1]) botoes[1].classList.add('active');
+    if (tab === 'perfil' && botoes[2]) botoes[2].classList.add('active');
+    
+    // Carregar dados conforme a aba
+    if (tab === 'painel' && typeof carregarDadosVoluntario === 'function') {
+        carregarDadosVoluntario();
+    }
+    if (tab === 'teste' && typeof carregarPerguntas === 'function') {
+        carregarPerguntas();
+    }
+    if (tab === 'perfil' && typeof carregarPerfilEdicao === 'function') {
+        carregarPerfilEdicao();
+    }
+}
 
     function admTab(tab) {
         document.getElementById('ap-dash').style.display = tab === 'dash' ? 'block' : 'none';

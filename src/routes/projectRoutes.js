@@ -28,7 +28,7 @@ router.get('/:id/candidatos', authMiddleware, buscarProjetoComCandidatos);
 router.post('/:id/candidatar', authMiddleware, candidatarProjeto);
 
 // Rota para atualizar status do voluntário no projeto
-router.put('/:projetoId/voluntarios/:volunteerId/status', authMiddleware, adminOnly, atualizarStatusVoluntario);
+router.put('/:projectId/voluntarios/:volunteerId/status', authMiddleware, adminOnly, atualizarStatusVoluntario);
 
 // Rotas administrativas
 router.post('/', authMiddleware, adminOnly, criarProjeto);

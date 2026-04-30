@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/questions', authMiddleware, getQuestions);
 router.post('/submit', authMiddleware, submitTest);
-router.get('/result', authMiddleware, getTestResult);
-router.post('/seed', seedQuestions); // Rota pública para popular perguntas
+router.get('/result', authMiddleware, getTestResult);  // ESTA ROTA ESTÁ FALTANDO!
+router.post('/seed', seedQuestions);
 
 export default router;
